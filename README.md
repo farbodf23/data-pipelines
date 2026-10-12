@@ -1,6 +1,6 @@
-# 🚀 Data Engineering & Pipeline Playground
 
-Welcome to my **Data Pipelines** repository! This repo serves as a hands-on workspace where I build, test, and containerize various data engineering concepts, architectural patterns, and workflow pipelines from scratch.
+
+This repo serves as a hands-on workspace where I build, test, and containerize various data engineering concepts, architectural patterns, and workflow pipelines from scratch.
 
 Rather than a single monolithic application, this repository is structured as a collection of **independent, modular mini-projects**, each designed to explore specific tools and methodologies in modern data engineering.
 
