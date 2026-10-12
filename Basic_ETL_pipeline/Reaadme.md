@@ -27,7 +27,7 @@ A modular, containerized **Extract, Load, Transform (ELT)** data pipeline built 
 
 ## 📂 Project Structure
 
-
+```text
 Basic_ELT_pipeline/
 ├── data/
 │   └── raw_sales.csv            # Raw input dataset (simulating upstream source)
@@ -36,4 +36,5 @@ Basic_ELT_pipeline/
 ├── requirements.txt             # Python pipeline dependencies
 ├── init.sql                     # Database schema bootstrap script
 └── pipeline.py                  # Core Python ELT script (load raw -> transform -> analytics)
+```
 
