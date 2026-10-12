@@ -123,6 +123,3 @@ docker compose down -v
 
 ```
 
-```
-
-```
