@@ -1,6 +1,3 @@
-
-
-```markdown
 # 🔄 Advanced Multi-Tier ELT Pipeline (PostgreSQL + Python + Docker)
 
 An enterprise-grade **Extract, Load, Transform (ELT)** data pipeline that implements a multi-schema data warehouse architecture. This project separates raw, uncleaned ingestion data (`staging`) from business-ready aggregates (`analytics`) using a fully containerized Docker workflow.
