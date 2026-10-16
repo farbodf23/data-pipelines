@@ -1,0 +1,62 @@
+services:
+  # ==========================================
+  # 1. Target PostgreSQL Data Warehouse
+  # ==========================================
+  postgres_warehouse:
+    image: postgres:15-alpine
+    container_name: postgres_warehouse
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: warehouse
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_warehouse:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================
+  # 2. Local AWS S3 Mock (Pinned Free Version)
+  # ==========================================
+  localstack:
+    image: localstack/localstack:3.8.0
+    container_name: localstack_s3
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - localstack_data:/var/lib/localstack
+
+  # ==========================================
+  # 3. Apache Airflow Orchestrator
+  # ==========================================
+  airflow:
+    image: apache/airflow:2.8.1-python3.10
+    container_name: airflow_orchestrator
+    restart: always
+    depends_on:
+      postgres_warehouse:
+        condition: service_healthy
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres_warehouse:5432/warehouse
+      - _PIP_ADDITIONAL_REQUIREMENTS=pandas boto3 pyarrow
+      - AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
+    ports:
+      - "8080:8080"
+    command: standalone
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+
+volumes:
+  pgdata_warehouse:
+  localstack_data:

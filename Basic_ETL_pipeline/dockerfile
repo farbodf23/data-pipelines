@@ -1,0 +1,13 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Install dependencies first for Docker layer caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -i https://pypi.org/simple --trusted-host pypi.org -r requirements.txt
+
+# Copy the pipeline scr ipt into the image
+COPY pipeline.py .
+
+# Entrypoint command
+CMD ["python", "pipeline.py"]

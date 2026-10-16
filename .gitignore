@@ -1,0 +1,41 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.idea/
+.vscode/
+node_modules/
+logs/
+*.log
+guidance.txt
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Airflow
+airflow.cfg
+airflow.db
+logs/
+
+# Python tools
+.pytest_cache/
+.mypy_cache/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
