@@ -47,7 +47,7 @@ services:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__CORE__LOAD_EXAMPLES=false
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres_warehouse:5432/warehouse
-      - _PIP_ADDITIONAL_REQUIREMENTS=pandas boto3 pyarrow
+      - _PIP_ADDITIONAL_REQUIREMENTS=pandas boto3 pyarrow psycopg2-binary sqlalchemy
       - AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
     ports:
       - "8080:8080"
@@ -56,6 +56,21 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+
+  # ==========================================
+  # 4. pgAdmin for PostgreSQL Management  
+  # ==========================================
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8081:80"
+    depends_on:
+      postgres_warehouse:
+        condition: service_healthy
 
 volumes:
   pgdata_warehouse:

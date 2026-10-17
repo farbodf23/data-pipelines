@@ -1,5 +1,6 @@
 from datetime import datetime
 from airflow import DAG
+from airflow.models import Variable
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import BranchPythonOperator, PythonOperator
 
@@ -8,6 +9,7 @@ default_args = {
     "depends_on_past": False,
     "retries": 1,
 }
+Variable.set("data_volume_is_large", False)
 
 
 def heavy_path():
@@ -19,11 +21,7 @@ def light_path():
 
 
 def choose_branch(**context):
-    """Evaluates a condition at runtime and returns the ID of the next task."""
-    # In a real pipeline, this could check an S3 file size, a row count, or an API flag.
-    # For this example, let's simulate a random condition or a variable check.
-    data_volume_is_large = False  # Change to False to test the other branch
-
+    data_volume_is_large = Variable.get("data_volume_is_large")
     if data_volume_is_large:
         print("--> Condition met: Routing to heavy processing pipeline.")
         return "process_large_dataset"
